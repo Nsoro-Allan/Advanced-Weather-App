@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
+import { Map } from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import { format } from 'date-fns'
 import { Sun, Moon, Wind, Droplets, Eye, Gauge } from 'lucide-react'
@@ -61,7 +62,7 @@ export default function App() {
   const [error, setError] = useState('')
   const [coords, setCoords] = useState<[number, number] | null>(null)
   const [darkMode, setDarkMode] = useState(false)
-  const mapRef = useRef<any>(null)
+  const mapRef = useRef<Map | null>(null)
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -72,7 +73,7 @@ export default function App() {
           fetchWeather(latitude, longitude)
           fetchForecast(latitude, longitude)
         },
-        (err) => {
+        () => {
           setError('Unable to retrieve your location. Please search for a city.')
         }
       )
@@ -87,7 +88,7 @@ export default function App() {
     try {
       const response = await axios.get(`${WEATHER_API_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`)
       setWeather(response.data)
-    } catch (err) {
+    } catch {
       setError('Unable to fetch weather data. Please try again.')
     }
     setLoading(false)
@@ -116,7 +117,7 @@ export default function App() {
       } else {
         setError('City not found. Please try again.')
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.')
     }
     setLoading(false)
