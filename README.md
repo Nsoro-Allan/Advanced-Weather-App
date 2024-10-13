@@ -19,3 +19,5 @@ This Advanced Weather App help show the weather with advanced designs and featur
 - Modern Design
 
 - Map Location Pinpointing
+
+- Lightmode / Darkmode view
